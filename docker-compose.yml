@@ -1,0 +1,21 @@
+services:
+  db:
+    container_name: hub_api
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ltt4456
+      POSTGRES_PASSWORD: password
+      PGDATA: /data/hub
+
+    volumes:
+      - db:/data/hub
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+networks:
+  db:
+    driver: bridge
+
+volumes:
+  db:

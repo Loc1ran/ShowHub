@@ -1,0 +1,18 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ShowHub
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hub_api
+    username: ltt4456
+    password: password
+
+  jpa:
+    show-sql: true
+
+  web:
+    error:
+      include-message: always
