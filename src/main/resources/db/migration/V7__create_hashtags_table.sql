@@ -2,9 +2,9 @@ CREATE TABLE hashtags
 (
     id           BIGSERIAL PRIMARY KEY,
     name         VARCHAR(50),
-    usage_count  INT       DEFAULT 0                 NOT NULL,
-    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    last_used_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+    usage_count  INT                      DEFAULT 0                 NOT NULL,
+    created_at   TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    last_used_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 CREATE TABLE post_hashtags

@@ -1,21 +1,21 @@
 CREATE TABLE comments
 (
     id                BIGSERIAL PRIMARY KEY,
-    post_id           BIGINT                              NOT NULL,
-    user_id           BIGINT                              NOT NULL,
-    content           TEXT                                NOT NULL,
-    parent_comment_id BIGINT                              NOT NULL,
-    likes_count       BIGINT    DEFAULT 0                 NOT NULL,
-    created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+    post_id           BIGINT                                             NOT NULL,
+    user_id           BIGINT                                             NOT NULL,
+    content           TEXT                                               NOT NULL,
+    parent_comment_id BIGINT                                             NOT NULL,
+    likes_count       BIGINT                   DEFAULT 0                 NOT NULL,
+    created_at        TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at        TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 CREATE TABLE comment_likes
 (
     id         BIGSERIAL PRIMARY KEY,
-    user_id    BIGINT                              NOT NULL,
-    comment_id BIGINT                              NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+    user_id    BIGINT                                             NOT NULL,
+    comment_id BIGINT                                             NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 ALTER TABLE comments

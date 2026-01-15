@@ -1,9 +1,9 @@
 CREATE TABLE follows
 (
     id           BIGSERIAL PRIMARY KEY,
-    follower_id  BIGINT                              NOT NULL,
-    following_id BIGINT                              NOT NULL,
-    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    follower_id  BIGINT                                             NOT NULL,
+    following_id BIGINT                                             NOT NULL,
+    created_at   TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
     UNIQUE (follower_id, following_id),
     CHECK (follower_id != following_id)
 );

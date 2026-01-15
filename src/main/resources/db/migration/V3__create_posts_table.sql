@@ -14,22 +14,22 @@ CREATE TABLE posts
 CREATE TABLE post_media
 (
     id             BIGSERIAL PRIMARY KEY,
-    post_id        BIGINT                              NOT NULL,
-    media_type     VARCHAR(20)                         NOT NULL,
-    media_order    INT       DEFAULT 0                 NOT NULL,
-    original_url   VARCHAR(500)                        NOT NULL,
-    compressed_url VARCHAR(500)                        NOT NULL,
-    hls_url        VARCHAR(500)                        NOT NULL,
+    post_id        BIGINT                                             NOT NULL,
+    media_type     VARCHAR(20)                                        NOT NULL,
+    media_order    INT                      DEFAULT 0                 NOT NULL,
+    original_url   VARCHAR(500)                                       NOT NULL,
+    compressed_url VARCHAR(500)                                       NOT NULL,
+    hls_url        VARCHAR(500)                                       NOT NULL,
     duration       INT,
-    created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+    created_at     TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 CREATE TABLE post_likes
 (
     id         BIGSERIAL PRIMARY KEY,
-    user_id    BIGINT                              NOT NULL,
-    post_id    BIGINT                              NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+    user_id    BIGINT                                             NOT NULL,
+    post_id    BIGINT                                             NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 ALTER TABLE post_media

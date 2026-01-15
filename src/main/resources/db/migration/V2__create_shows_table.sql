@@ -1,18 +1,18 @@
 CREATE TABLE shows
 (
-    id           BIGSERIAL PRIMARY KEY                   NOT NULL,
-    title        VARCHAR(255)                            NOT NULL,
+    id           BIGSERIAL PRIMARY KEY                              NOT NULL,
+    title        VARCHAR(255)                                       NOT NULL,
     description  TEXT,
     poster_url   VARCHAR(500),
     banner_url   VARCHAR(500),
-    release_date DATE                                    NOT NULL,
+    release_date DATE                                               NOT NULL,
     end_date     DATE,
-    status       VARCHAR(20)   DEFAULT 'UPCOMING'        NOT NULL,
-    avg_rating   DECIMAL(3, 2) DEFAULT 0.0 CHECK (avg_rating >= 1 AND <= 5),
-    rating_count INT           DEFAULT 0                 NOT NULL,
-    country      VARCHAR(100)                            NOT NULL,
-    created_at   TIMESTAMP     DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_at   TIMESTAMP     DEFAULT CURRENT_TIMESTAMP NOT NULL
+    status       VARCHAR(20)              DEFAULT 'UPCOMING'        NOT NULL,
+    avg_rating   DECIMAL(3, 2)            DEFAULT 0.0 CHECK (avg_rating >= 1 AND <= 5),
+    rating_count INT                      DEFAULT 0                 NOT NULL,
+    country      VARCHAR(100)                                       NOT NULL,
+    created_at   TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at   TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 CREATE TABLE genres
