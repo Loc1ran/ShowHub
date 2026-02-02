@@ -8,7 +8,7 @@ CREATE TABLE shows
     release_date DATE                                               NOT NULL,
     end_date     DATE,
     status       VARCHAR(20)              DEFAULT 'UPCOMING'        NOT NULL,
-    avg_rating   DECIMAL(3, 2)            DEFAULT 0.0 CHECK (avg_rating >= 1 AND <= 5),
+    avg_rating   DECIMAL(3, 2)            DEFAULT 0.0 CHECK (avg_rating >= 1 AND avg_rating <= 5),
     rating_count INT                      DEFAULT 0                 NOT NULL,
     country      VARCHAR(100)                                       NOT NULL,
     created_at   TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
