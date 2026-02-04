@@ -1,10 +1,14 @@
 package loctran.showhub.user;
 
 import jakarta.persistence.*;
+import loctran.showhub.post.CommentLike;
+import loctran.showhub.post.Post;
+import loctran.showhub.post.PostLike;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.OffsetDateTime;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -36,4 +40,14 @@ public class User {
 
     @Column(name = "updated_at", insertable = false)
     private OffsetDateTime updatedAt;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Post> posts;
+
+    @OneToMany(mappedBy = "user")
+    private Set<PostLike> postLikes;
+
+    @OneToMany(mappedBy = "user")
+    private Set<CommentLike> commentLikes;
+
 }

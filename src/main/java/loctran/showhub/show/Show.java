@@ -1,7 +1,6 @@
 package loctran.showhub.show;
 
 import jakarta.persistence.*;
-import loctran.showhub.episode.Episode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -52,6 +51,14 @@ public class Show {
     @Column(name = "updated_at", insertable = false)
     private OffsetDateTime updatedAt;
 
-    @OneToMany(mappedBy = "show")
+    @OneToMany(mappedBy = "show", orphanRemoval = true)
     private Set<Episode> episodes;
+
+    @ManyToMany
+    @JoinTable(
+            name = "show_genres",
+            joinColumns = @JoinColumn(name = "show_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private Set<Genre> genres;
 }

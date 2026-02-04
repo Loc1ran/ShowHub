@@ -1,12 +1,10 @@
-package loctran.showhub.episode;
+package loctran.showhub.show;
 
 import jakarta.persistence.*;
-import loctran.showhub.show.Show;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 
 @Entity
 @Getter

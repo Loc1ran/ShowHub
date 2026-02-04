@@ -1,7 +1,6 @@
 package loctran.showhub.post;
 
 import jakarta.persistence.*;
-import loctran.showhub.show.Show;
 import loctran.showhub.user.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,11 +11,15 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@Table(name = "posts")
-public class Post {
+@Table(name = "comments")
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -25,17 +28,14 @@ public class Post {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "show_id")
-    private Show show;
+    @JoinColumn(name = "parent_comment_id")
+    private Comment parentComment;
+
+    @OneToMany(mappedBy = "parentComment")
+    private Set<Comment> replies;
 
     @Column(name = "likes_count")
     private int likesCount;
-
-    @Column(name = "comments_count")
-    private int commentsCount;
-
-    @Column(name = "shares_count")
-    private int sharesCount;
 
     @Column(name = "created_at", insertable = false, updatable = false)
     private OffsetDateTime createdAt;
@@ -43,9 +43,6 @@ public class Post {
     @Column(name = "updated_at", insertable = false)
     private OffsetDateTime updatedAt;
 
-    @OneToMany(mappedBy = "post")
-    private Set<PostMedia> postMedia;
-
-    @OneToMany(mappedBy = "post")
-    private Set<PostLike> postLikes;
+    @OneToMany(mappedBy = "comment")
+    private Set<CommentLike> commentLikes;
 }

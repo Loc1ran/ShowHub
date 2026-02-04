@@ -1,6 +1,7 @@
 package loctran.showhub.post;
 
 import jakarta.persistence.*;
+import loctran.showhub.user.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,32 +10,19 @@ import java.time.OffsetDateTime;
 @Entity
 @Getter
 @Setter
-@Table(name = "post_media")
-public class PostMedia {
+@Table(name = "post_likes")
+public class PostLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
-
-    @Column(name = "media_type")
-    private String mediaType;
-
-    @Column(name = "media_order")
-    private int mediaOrder;
-
-    @Column(name = "original_url")
-    private String originalUrl;
-
-    @Column(name = "compressed_url")
-    private String compressedUrl;
-
-    @Column(name = "hls_url")
-    private String hls_url;
-
-    private int duration;
 
     @Column(name = "created_at", insertable = false, updatable = false)
     private OffsetDateTime createdAt;
