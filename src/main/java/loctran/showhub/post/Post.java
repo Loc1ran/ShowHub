@@ -1,6 +1,7 @@
 package loctran.showhub.post;
 
 import jakarta.persistence.*;
+import loctran.showhub.hashtag.HashTag;
 import loctran.showhub.show.Show;
 import loctran.showhub.user.User;
 import lombok.Getter;
@@ -29,13 +30,13 @@ public class Post {
     private Show show;
 
     @Column(name = "likes_count")
-    private int likesCount;
+    private Long likesCount;
 
     @Column(name = "comments_count")
-    private int commentsCount;
+    private Long commentsCount;
 
     @Column(name = "shares_count")
-    private int sharesCount;
+    private Long sharesCount;
 
     @Column(name = "created_at", insertable = false, updatable = false)
     private OffsetDateTime createdAt;
@@ -48,4 +49,12 @@ public class Post {
 
     @OneToMany(mappedBy = "post")
     private Set<PostLike> postLikes;
+
+    @ManyToMany
+    @JoinTable(
+            name = "post_hashtags",
+            joinColumns = @JoinColumn( name ="post_id"),
+            inverseJoinColumns = @JoinColumn(name = "hashtag_id")
+    )
+    private Set<HashTag> hashTags;
 }

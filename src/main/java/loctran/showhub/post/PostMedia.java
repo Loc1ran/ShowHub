@@ -23,7 +23,7 @@ public class PostMedia {
     private String mediaType;
 
     @Column(name = "media_order")
-    private int mediaOrder;
+    private Long mediaOrder;
 
     @Column(name = "original_url")
     private String originalUrl;
@@ -34,7 +34,7 @@ public class PostMedia {
     @Column(name = "hls_url")
     private String hls_url;
 
-    private int duration;
+    private Long duration;
 
     @Column(name = "created_at", insertable = false, updatable = false)
     private OffsetDateTime createdAt;

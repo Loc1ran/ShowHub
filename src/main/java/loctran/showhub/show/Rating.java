@@ -1,50 +1,42 @@
-package loctran.showhub.post;
+package loctran.showhub.show;
 
 import jakarta.persistence.*;
 import loctran.showhub.user.User;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.Set;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "comments")
-public class Comment {
+@Table(name = "ratings")
+public class Rating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "post_id")
-    private Post post;
-
-    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    private String content;
-
     @ManyToOne
-    @JoinColumn(name = "parent_comment_id")
-    private Comment parentComment;
+    @JoinColumn(name = "show_id")
+    private Show show;
 
-    @OneToMany(mappedBy = "parentComment")
-    private Set<Comment> replies;
+    private BigDecimal rating;
 
-    @Column(name = "likes_count")
-    private Long likesCount;
+    private String review;
+
+    @Column(name = "helpful_count")
+    private Long helpfulCount;
 
     @Column(name = "created_at", insertable = false, updatable = false)
     private OffsetDateTime createdAt;
 
     @Column(name = "updated_at", insertable = false)
     private OffsetDateTime updatedAt;
-
-    @OneToMany(mappedBy = "comment")
-    private Set<CommentLike> commentLikes;
 
     @PreUpdate
     protected void onUpdate() {

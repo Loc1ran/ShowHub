@@ -1,9 +1,11 @@
 package loctran.showhub.user;
 
 import jakarta.persistence.*;
+import loctran.showhub.notification.Notification;
 import loctran.showhub.post.CommentLike;
 import loctran.showhub.post.Post;
 import loctran.showhub.post.PostLike;
+import loctran.showhub.show.Rating;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -50,4 +52,23 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<CommentLike> commentLikes;
 
+    @OneToMany(mappedBy = "user")
+    private Set<Rating>  ratings;
+
+    @OneToMany(mappedBy = "follower")
+    private Set<Follow> follower;
+
+    @OneToMany(mappedBy = "following")
+    private Set<Follow> following;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Notification> notifications;
+
+    @OneToMany(mappedBy = "actor")
+    private Set<Notification> triggerNotifications;
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = OffsetDateTime.now();
+    }
 }

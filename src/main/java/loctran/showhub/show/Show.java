@@ -41,7 +41,7 @@ public class Show {
     private BigDecimal avgRating;
 
     @Column(name = "rating_count")
-    private int ratingCount;
+    private Long ratingCount;
 
     private String country;
 
@@ -61,4 +61,7 @@ public class Show {
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
     private Set<Genre> genres;
+
+    @OneToMany(mappedBy = "show")
+    private Set<Rating> ratings;
 }
