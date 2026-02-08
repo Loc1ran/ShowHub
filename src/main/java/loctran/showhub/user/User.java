@@ -67,6 +67,15 @@ public class User {
     @OneToMany(mappedBy = "actor")
     private Set<Notification> triggerNotifications;
 
+    @OneToOne(mappedBy = "user")
+    private UserSetting setting;
+
+    @OneToMany(mappedBy = "sender")
+    private Set<Message> sender;
+
+    @OneToMany(mappedBy = "receiver")
+    private Set<Message> receiver;
+
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = OffsetDateTime.now();
