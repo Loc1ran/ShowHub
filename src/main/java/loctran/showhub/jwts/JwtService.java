@@ -13,6 +13,10 @@ import java.util.Map;
 public class JwtService {
     private final JwtConfig jwtConfig;
 
+    public Jwt generateToken(Long id, Map<String, Object> claims) {
+        return generateToken(id, claims, jwtConfig.getAccessTokenExpiration());
+    }
+
     private Jwt generateToken(Long id, Map<String, Object> claims, long expirationDate) {
         Claims claim = Jwts.claims()
                 .add(claims)

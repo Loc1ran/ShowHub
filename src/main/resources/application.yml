@@ -16,3 +16,6 @@ spring:
   web:
     error:
       include-message: always
+
+  jwt:
+    access-token-expiration: 1000000000
