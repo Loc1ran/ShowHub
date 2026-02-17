@@ -1,6 +1,7 @@
 package loctran.showhub.auth;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import loctran.showhub.dto.UserRegisterRequest;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +22,14 @@ public class AuthController {
             @Valid @RequestBody AuthRequest authRequest,
             HttpServletResponse response) {
         AuthResponse authResponse = authService.authenticate(authRequest, response);
+
+        return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, authResponse.getJwtToken()).body(authResponse);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<@NonNull AuthResponse> registerUser(
+            @Valid @RequestBody UserRegisterRequest request){
+        AuthResponse authResponse = authService.register(request);
 
         return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, authResponse.getJwtToken()).body(authResponse);
     }

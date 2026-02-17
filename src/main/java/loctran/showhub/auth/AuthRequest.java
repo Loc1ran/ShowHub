@@ -1,15 +1,16 @@
 package loctran.showhub.auth;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+
 import lombok.Data;
 
 @Data
 public class AuthRequest {
-    @NotNull(message = "email is required")
-    @Email
+    @NotBlank(message = "email is required")
+    @Email(message = "invalid email format")
     private String email;
 
-    @NotNull(message = "password is required")
+    @NotBlank(message = "password is required")
     private String password;
 }

@@ -1,13 +1,18 @@
 package loctran.showhub.auth;
 
 import jakarta.servlet.http.HttpServletResponse;
+import loctran.showhub.dto.UserRegisterRequest;
+import loctran.showhub.exceptions.BadRequestException;
 import loctran.showhub.jwts.Jwt;
 import loctran.showhub.jwts.JwtService;
+import loctran.showhub.mappers.UserMapper;
+import loctran.showhub.user.Role;
 import loctran.showhub.user.User;
 import loctran.showhub.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -19,8 +24,10 @@ public class AuthService {
     private final JwtService jwtService;
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
+    private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthResponse authenticate(AuthRequest authRequest, HttpServletResponse httpServletResponse) {
+    public AuthResponse authenticate(AuthRequest authRequest, HttpServletResponse HttpServletResponse) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authRequest.getEmail(),
@@ -44,5 +51,26 @@ public class AuthService {
         claims.put("role", user.getRole());
 
         return claims;
+    }
+
+    public AuthResponse register(UserRegisterRequest request){
+        if(userRepository.existsByEmail(request.getEmail())){
+            throw new BadRequestException("Email already exists");
+        }
+
+        if(userRepository.existsByUsername(request.getUsername())){
+            throw new BadRequestException("Username already exists");
+        }
+
+        User user = userMapper.toEntity(request);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(Role.USER);
+        userRepository.save(user);
+
+        Map<String, Object> claims = setClaims(user);
+
+        Jwt accessToken = jwtService.generateToken(user.getId(), claims);
+
+        return new AuthResponse(accessToken.toString());
     }
 }
