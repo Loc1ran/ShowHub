@@ -1,6 +1,7 @@
 package loctran.showhub.auth;
 
 import jakarta.servlet.http.HttpServletResponse;
+import loctran.showhub.dto.UserDTO;
 import loctran.showhub.dto.UserRegisterRequest;
 import loctran.showhub.exceptions.BadRequestException;
 import loctran.showhub.jwts.Jwt;
@@ -38,9 +39,11 @@ public class AuthService {
         User user =  userRepository.findByEmail(authRequest.getEmail()).orElseThrow();
         Map<String, Object> claims = setClaims(user);
 
+        UserDTO userDTO = userMapper.toDTO(user);
+
         Jwt accessToken = jwtService.generateToken(user.getId(), claims);
 
-        return new AuthResponse(accessToken.toString());
+        return new AuthResponse(userDTO, accessToken.toString());
     }
 
     private Map<String, Object> setClaims(User user) {
@@ -69,8 +72,10 @@ public class AuthService {
 
         Map<String, Object> claims = setClaims(user);
 
+        UserDTO userDTO = userMapper.toDTO(user);
+
         Jwt accessToken = jwtService.generateToken(user.getId(), claims);
 
-        return new AuthResponse(accessToken.toString());
+        return new AuthResponse(userDTO, accessToken.toString());
     }
 }

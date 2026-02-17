@@ -5,6 +5,7 @@ import loctran.showhub.dto.UserRegisterRequest;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +32,6 @@ public class AuthController {
             @Valid @RequestBody UserRegisterRequest request){
         AuthResponse authResponse = authService.register(request);
 
-        return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, authResponse.getJwtToken()).body(authResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.AUTHORIZATION, authResponse.getJwtToken()).body(authResponse);
     }
 }
