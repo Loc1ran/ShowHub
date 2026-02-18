@@ -18,4 +18,6 @@ spring:
       include-message: always
 
   jwt:
-    access-token-expiration: 1000000000
+    secret: ${JWT_SECRET}
+    accessTokenExpiration: 100000
+    refreshTokenExpiration: 604800

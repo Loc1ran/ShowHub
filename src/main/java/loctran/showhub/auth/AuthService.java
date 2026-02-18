@@ -1,5 +1,6 @@
 package loctran.showhub.auth;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import loctran.showhub.dto.UserDTO;
 import loctran.showhub.dto.UserRegisterRequest;
@@ -28,7 +29,7 @@ public class AuthService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthResponse authenticate(AuthRequest authRequest, HttpServletResponse HttpServletResponse) {
+    public AuthResponse authenticate(AuthRequest authRequest, HttpServletResponse response) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authRequest.getEmail(),
@@ -42,6 +43,14 @@ public class AuthService {
         UserDTO userDTO = userMapper.toDTO(user);
 
         Jwt accessToken = jwtService.generateToken(user.getId(), claims);
+        Jwt refreshToken =  jwtService.generateRefreshToken(user.getId(), claims);
+
+        Cookie cookie = new Cookie("refreshToken", refreshToken.toString());
+        cookie.setHttpOnly(true);
+        cookie.setPath("/api/v1/auth/refresh");
+        cookie.setMaxAge(604800);
+        cookie.setSecure(true);
+        response.addCookie(cookie);
 
         return new AuthResponse(userDTO, accessToken.toString());
     }
@@ -70,6 +79,20 @@ public class AuthService {
         user.setRole(Role.USER);
         userRepository.save(user);
 
+        Map<String, Object> claims = setClaims(user);
+
+        UserDTO userDTO = userMapper.toDTO(user);
+
+        Jwt accessToken = jwtService.generateToken(user.getId(), claims);
+
+        return new AuthResponse(userDTO, accessToken.toString());
+    }
+
+    public AuthResponse refresh(String refreshToken){
+        Jwt jwt = jwtService.parseToken(refreshToken);
+        String email = jwt.getEmailFromClaims();
+
+        User user =  userRepository.findByEmail(email).orElseThrow();
         Map<String, Object> claims = setClaims(user);
 
         UserDTO userDTO = userMapper.toDTO(user);

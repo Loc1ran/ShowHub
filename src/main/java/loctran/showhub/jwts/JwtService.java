@@ -17,6 +17,10 @@ public class JwtService {
         return generateToken(id, claims, jwtConfig.getAccessTokenExpiration());
     }
 
+    public Jwt generateRefreshToken(Long id, Map<String, Object> claims) {
+        return generateToken(id, claims, jwtConfig.getRefreshTokenExpiration());
+    }
+
     private Jwt generateToken(Long id, Map<String, Object> claims, long expirationDate) {
         Claims claim = Jwts.claims()
                 .add(claims)

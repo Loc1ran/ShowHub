@@ -51,8 +51,10 @@ public class SecurityConfig {
                         c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(c -> c
-                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/login")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/**")
                         .permitAll()
+                        .anyRequest()
+                        .authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

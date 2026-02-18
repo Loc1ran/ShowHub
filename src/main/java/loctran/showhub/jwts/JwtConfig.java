@@ -8,12 +8,14 @@ import org.springframework.context.annotation.Configuration;
 import javax.crypto.SecretKey;
 
 @Configuration
-@Data
 @ConfigurationProperties(prefix = "spring.jwt")
+@Data
 public class JwtConfig {
     private String secret;
     private int accessTokenExpiration;
     private int refreshTokenExpiration;
 
-    public SecretKey getSecretKey() { return Keys.hmacShaKeyFor(secret.getBytes()); }
+    public SecretKey getSecretKey() {
+        return Keys.hmacShaKeyFor(secret.getBytes());
+    }
 }
