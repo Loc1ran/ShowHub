@@ -23,6 +23,10 @@ public class UserUserDetailsService implements UserDetailsService {
         return new User(
                 user.getUsername(),
                 user.getPassword(),
+                user.isEmailVerified(),
+                true,
+                true,
+                user.isEnabled(),
                 List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()))
         );
     }
