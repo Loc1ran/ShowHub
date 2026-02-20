@@ -79,6 +79,10 @@ public class User {
     @OneToMany(mappedBy = "receiver")
     private Set<Message> receiver;
 
+    private boolean emailVerified = false;
+
+    private boolean enabled = true;
+
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = OffsetDateTime.now();
