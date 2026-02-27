@@ -4,13 +4,14 @@ import jakarta.validation.Valid;
 import loctran.showhub.dto.UserRegisterRequest;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 public class AuthController {
     private final AuthService authService;

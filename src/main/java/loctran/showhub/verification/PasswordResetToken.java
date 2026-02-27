@@ -1,11 +1,12 @@
-package loctran.showhub.user;
+package loctran.showhub.verification;
 
 import jakarta.persistence.*;
+import loctran.showhub.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -24,17 +25,17 @@ public class PasswordResetToken {
     private User user;
 
     @Column(name = "expires_at")
-    private OffsetDateTime expiresAt;
+    private LocalDateTime expiresAt;
 
     private boolean used = false;
 
     public PasswordResetToken(User user, String token, int expiryMinutes) {
         this.user = user;
         this.token = token;
-        this.expiresAt = OffsetDateTime.now().plusMinutes(expiryMinutes);
+        this.expiresAt = LocalDateTime.now().plusMinutes(expiryMinutes);
     }
 
     public boolean isExpired() {
-        return OffsetDateTime.now().isAfter(this.expiresAt);
+        return LocalDateTime.now().isAfter(this.expiresAt);
     }
 }

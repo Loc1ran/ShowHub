@@ -1,12 +1,12 @@
-package loctran.showhub.user;
+package loctran.showhub.verification;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import loctran.showhub.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -25,19 +25,19 @@ public class EmailVerificationToken {
     private User user;
 
     @Column(name = "expires_at")
-    private OffsetDateTime expiresAt;
+    private LocalDateTime expiresAt;
 
     @Column(name = "created_at")
-    private OffsetDateTime createdAt = OffsetDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     public EmailVerificationToken(User user, String token, int expiryHours) {
         this.user = user;
         this.token = token;
-        this.expiresAt = OffsetDateTime.now().plusHours(expiryHours);
+        this.expiresAt = LocalDateTime.now().plusHours(expiryHours);
     }
 
     public boolean isExpired() {
-        return OffsetDateTime.now().isAfter(this.expiresAt);
+        return LocalDateTime.now().isAfter(this.expiresAt);
     }
 
 }

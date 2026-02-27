@@ -11,7 +11,11 @@ import loctran.showhub.mappers.UserMapper;
 import loctran.showhub.user.Role;
 import loctran.showhub.user.User;
 import loctran.showhub.user.UserRepository;
-import lombok.AllArgsConstructor;
+import loctran.showhub.verification.EmailService;
+import loctran.showhub.verification.EmailVerificationTokenRepository;
+import loctran.showhub.verification.PasswordResetTokenRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,13 +25,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthService {
     private final JwtService jwtService;
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
+    private final EmailVerificationTokenRepository emailVerificationTokenRepository;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
+
+    @Value("${app.email.verification-expiry-hours:24}")
+    private int verificationExpiryHours;
+
+    @Value("${app.email.reset-expiry-minutes:15}")
+    private int resetExpiryMinutes;
 
     public AuthResponse authenticate(AuthRequest authRequest, HttpServletResponse response) {
         authenticationManager.authenticate(

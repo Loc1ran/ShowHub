@@ -5,7 +5,7 @@ import loctran.showhub.user.User;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -37,5 +37,5 @@ public class Notification {
     private Boolean isRead = false;
 
    @Column(name = "created_at", insertable = false, updatable = false, nullable = false)
-    private OffsetDateTime createdAt;
+    private LocalDateTime createdAt;
 }

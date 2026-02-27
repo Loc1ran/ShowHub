@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import loctran.showhub.user.User;
 import lombok.*;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 @Builder
 @Entity
@@ -50,14 +50,14 @@ public class Report {
     private String moderatorNotes;
 
     @Column(name = "created_at", insertable = false, updatable = false)
-    private OffsetDateTime createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "resolved_at", insertable = false)
-    private OffsetDateTime resolved_at;
+    private LocalDateTime resolved_at;
 
     @PrePersist
     protected void onCreate() {
-        createdAt = OffsetDateTime.now();
+        createdAt = LocalDateTime.now();
     }
 
     public void resolve(User moderator, ReportStatus status, String moderatorNotes) {
@@ -68,6 +68,6 @@ public class Report {
         this.status = status;
         this.moderator = moderator;
         this.moderatorNotes = moderatorNotes;
-        this.resolved_at = OffsetDateTime.now();
+        this.resolved_at = LocalDateTime.now();
     }
 }
