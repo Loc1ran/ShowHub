@@ -23,7 +23,7 @@ public class UserUserDetailsService implements UserDetailsService {
         return new User(
                 user.getUsername(),
                 user.getPassword(),
-                user.isEmailVerified(),
+                true,
                 true,
                 true,
                 user.isEnabled(),

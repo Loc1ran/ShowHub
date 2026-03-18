@@ -2,9 +2,9 @@ package loctran.showhub.auth;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import loctran.showhub.dto.UserDTO;
-import loctran.showhub.dto.UserRegisterRequest;
+import loctran.showhub.dto.*;
 import loctran.showhub.exceptions.BadRequestException;
+import loctran.showhub.exceptions.InvalidTokenException;
 import loctran.showhub.jwts.Jwt;
 import loctran.showhub.jwts.JwtService;
 import loctran.showhub.mappers.UserMapper;
@@ -13,6 +13,7 @@ import loctran.showhub.user.User;
 import loctran.showhub.user.UserRepository;
 import loctran.showhub.verification.EmailService;
 import loctran.showhub.verification.EmailVerificationTokenRepository;
+import loctran.showhub.verification.PasswordResetToken;
 import loctran.showhub.verification.PasswordResetTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,9 +21,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -62,7 +65,7 @@ public class AuthService {
         cookie.setHttpOnly(true);
         cookie.setPath("/api/v1/auth/refresh");
         cookie.setMaxAge(604800);
-        cookie.setSecure(true);
+        cookie.setSecure(false);
         response.addCookie(cookie);
 
         return new AuthResponse(userDTO, accessToken.toString());
@@ -113,5 +116,44 @@ public class AuthService {
         Jwt accessToken = jwtService.generateToken(user.getId(), claims);
 
         return new AuthResponse(userDTO, accessToken.toString());
+    }
+
+
+    @Transactional
+    public MessageResponse forgotPassword(String email){
+        userRepository.findByEmail(email).ifPresent(user -> {
+            passwordResetTokenRepository.deleteByUser(user);
+
+            String token = UUID.randomUUID().toString();
+            PasswordResetToken passwordResetToken = new PasswordResetToken(user, token, resetExpiryMinutes);
+            passwordResetTokenRepository.save(passwordResetToken);
+
+            MailBody mailBody = new MailBody(email, token, "Reset Password" );
+            emailService.sendPasswordResetEmail(mailBody);
+        });
+
+        return new MessageResponse("If that email is registered, you will receive a password reset link shortly.");
+    }
+
+    public MessageResponse resetPassword(ResetPasswordRequest request){
+        PasswordResetToken resetToken = passwordResetTokenRepository.findByToken(
+                request.getToken()).orElseThrow(() -> new InvalidTokenException("Invalid token"));
+
+        if(resetToken.isExpired()){
+            throw new InvalidTokenException("Token has expired");
+        }
+
+        if(resetToken.isUsed()){
+            throw new InvalidTokenException("Token has been used");
+        }
+
+        User user = resetToken.getUser();
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+
+        resetToken.setUsed(true);
+        passwordResetTokenRepository.save(resetToken);
+
+        return new MessageResponse("Password reset successfully.");
     }
 }

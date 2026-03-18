@@ -23,7 +23,7 @@ public class EmailService {
 
     @Async
     public void sendVerificationEmail(MailBody mailBody) {
-        String verificationUrl = baseUrl + "/verify-email?token=" + mailBody.verificationToken();
+        String verificationUrl = baseUrl + "/api/v1/auth" + "/verify-email?token=" + mailBody.verificationToken();
 
         String htmlBody = """
             <html>
@@ -51,7 +51,7 @@ public class EmailService {
 
     @Async
     public void sendPasswordResetEmail(MailBody mailBody) {
-        String resetUrl = baseUrl + "/api/auth/reset-password?token=" + mailBody.verificationToken();
+        String resetUrl = baseUrl + "/api/v1/auth" + "/verify-email?token=" + mailBody.verificationToken();
 
         String htmlBody = """
             <html>
