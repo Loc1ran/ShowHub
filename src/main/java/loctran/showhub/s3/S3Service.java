@@ -28,19 +28,33 @@ import java.util.stream.Collectors;
 public class S3Service {
     private S3Client s3Client;
 
+    @Value("${aws.bucket-name}")
+    private String bucketName;
+
     @Value("${aws.region}")
     private String region;
 
-    public void uploadFile(String bucketName, String key, MultipartFile file) throws IOException {
-        PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-                .bucket(bucketName)
-                .key(key)
-                .build();
+    public String uploadFile(String key, MultipartFile file) {
+        try{
+            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(key)
+                    .build();
 
-        s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
+            s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
+
+            return getPublicUrl(key);
+        } catch (IOException e){
+            throw new RuntimeException(e);
+        }
     }
 
-    public String generatePresigned(String bucketName, String key, Duration duration){
+    private String getPublicUrl(String key) {
+        return String.format("https://%s.s3.%s.amazonaws.com/%s",
+                bucketName, region, key);
+    }
+
+    public String generatePresigned(String key, Duration duration){
         try(S3Presigner presigner = S3Presigner.builder()
                 .region(Region.of(region))
                 .build()) {
@@ -60,7 +74,7 @@ public class S3Service {
         }
     }
 
-    public void deleteFile(String bucketName, String key){
+    public void deleteFile(String key){
         DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
                 .bucket(bucketName)
                 .key(key)
@@ -69,7 +83,7 @@ public class S3Service {
         s3Client.deleteObject(deleteObjectRequest);
     }
 
-    public byte[] downloadFile(String bucketName, String key){
+    public byte[] downloadFile(String key){
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                 .bucket(bucketName)
                 .key(key)
@@ -80,7 +94,7 @@ public class S3Service {
         return responseBytes.asByteArray();
     }
 
-    public List<String> listFiles(String bucketName, String prefix){
+    public List<String> listFiles(String prefix){
         ListObjectsV2Request request =  ListObjectsV2Request.builder()
                 .bucket(bucketName)
                 .prefix(prefix)

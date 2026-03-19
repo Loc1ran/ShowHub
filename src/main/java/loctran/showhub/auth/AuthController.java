@@ -20,7 +20,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<@NonNull AuthResponse> login(
+    public ResponseEntity<AuthResponse> login(
             @Valid @RequestBody AuthRequest authRequest,
             HttpServletResponse response) {
         AuthResponse authResponse = authService.authenticate(authRequest, response);
@@ -29,7 +29,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<@NonNull AuthResponse> registerUser(
+    public ResponseEntity<AuthResponse> registerUser(
             @Valid @RequestBody UserRegisterRequest request) {
         AuthResponse authResponse = authService.register(request);
 
@@ -37,7 +37,7 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<@NonNull AuthResponse> refreshToken(
+    public ResponseEntity<AuthResponse> refreshToken(
             @CookieValue(value = "refreshToken") String refreshToken
     ) {
         AuthResponse authResponse = authService.refresh(refreshToken);
@@ -46,7 +46,7 @@ public class AuthController {
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<@NonNull MessageResponse> forgotPassword(
+    public ResponseEntity<MessageResponse> forgotPassword(
             @Valid @RequestBody ForgotPasswordRequest request
     ) {
         return ResponseEntity.ok(authService.forgotPassword(request.getEmail()));

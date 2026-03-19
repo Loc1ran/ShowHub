@@ -3,6 +3,7 @@ server:
 
 aws:
   region: us-east-1
+  bucket-name: 'showhub'
 
 spring:
   application:
@@ -12,6 +13,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/hub_api
     username: ltt4456
     password: password
+
 
   jpa:
     show-sql: true
