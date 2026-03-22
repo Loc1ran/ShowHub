@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/upload")
 @AllArgsConstructor
@@ -23,7 +26,7 @@ public class FileUploadController {
     public ResponseEntity<UploadResponse> uploadProfilePicture(
             @RequestParam("file") MultipartFile file,
             @AuthenticationPrincipal UserDetails user
-    ){
+    ) {
         String pictureUrl = s3Service.uploadFile("profiles", file);
 
         userService.updateProfilePicture(user, pictureUrl);
