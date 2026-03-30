@@ -5,6 +5,12 @@ aws:
   region: us-east-1
   bucket-name: 'showhub'
 
+cors:
+  allowed-origins: "*"
+  allowed-methods: "*"
+  allowed-headers: "*"
+  exposed-headers: "*"
+
 spring:
   application:
     name: ShowHub

@@ -11,6 +11,7 @@ import loctran.showhub.mappers.UserMapper;
 import loctran.showhub.user.Role;
 import loctran.showhub.user.User;
 import loctran.showhub.user.UserRepository;
+import loctran.showhub.user.UserService;
 import loctran.showhub.verification.EmailService;
 import loctran.showhub.verification.EmailVerificationTokenRepository;
 import loctran.showhub.verification.PasswordResetToken;
@@ -38,6 +39,7 @@ public class AuthService {
     private final EmailService emailService;
     private final EmailVerificationTokenRepository emailVerificationTokenRepository;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
+    private final UserService userService;
 
     @Value("${app.email.verification-expiry-hours:24}")
     private int verificationExpiryHours;
@@ -90,10 +92,7 @@ public class AuthService {
             throw new BadRequestException("Username already exists");
         }
 
-        User user = userMapper.toEntity(request);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(Role.USER);
-        userRepository.save(user);
+        User user = userService.registerUser(request);
 
         Map<String, Object> claims = setClaims(user);
 
