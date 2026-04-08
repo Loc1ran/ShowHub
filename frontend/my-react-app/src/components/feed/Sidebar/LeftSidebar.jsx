@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { NavItem }   from "./NavItem";
-import { GroupItem } from "./GroupItem";
-import { Icon }      from "../../Icon";
-import { NAV_ITEMS, GROUPS } from "../../../data/feedData";
+import { NAV_ITEMS } from "../../../data/feedData";
 
 // ─── LeftSidebar ──────────────────────────────────────────────────────────────
-// Collapsible left sidebar with nav links, groups, and a "New Post" CTA.
+// Compact icon-only left sidebar with navigation links.
 // Props:
 //   open     — controlled open state from parent
 //   onSignup — navigates to create account (New Post requires auth)
@@ -15,14 +13,19 @@ export function LeftSidebar({ open, onSignup }) {
 
   return (
     <aside
-      className={`shrink-0 overflow-hidden border-r border-white/5 transition-all duration-200 ${
-        open ? "w-[200px]" : "w-0"
+      className={`fixed left-0 top-0 z-40 overflow-hidden transition-all duration-200 ${
+        open ? "w-[80px]" : "w-0"
       }`}
     >
-      <div className="flex h-[calc(100vh-56px)] w-[200px] flex-col overflow-y-auto px-3 py-4 sticky top-14">
-
+      <div 
+        className="flex h-screen w-[80px] flex-col items-center justify-center overflow-hidden"
+        style={{
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+        }}
+      >
         {/* Navigation */}
-        <nav className="mb-5 flex flex-col gap-1">
+        <nav className="flex flex-col items-center justify-center gap-3">
           {NAV_ITEMS.map((item) => (
             <NavItem
               key={item.label}
@@ -33,18 +36,6 @@ export function LeftSidebar({ open, onSignup }) {
             />
           ))}
         </nav>
-
-        {/* Groups */}
-        <div className="mb-auto">
-          <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-widest text-neutral-800">
-            Groups
-          </p>
-          <div className="flex flex-col gap-1">
-            {GROUPS.map((g) => (
-              <GroupItem key={g.name} {...g} />
-            ))}
-          </div>
-        </div>
       </div>
     </aside>
   );

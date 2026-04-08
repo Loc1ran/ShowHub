@@ -1,5 +1,6 @@
 import { TrendingPanel } from "./TrendingPanel";
 import { TagsPanel }     from "./TagsPanel";
+import { GroupsPanel }   from "./GroupsPanel";
 
 // ─── RightPanel ───────────────────────────────────────────────────────────────
 // Right sidebar — sticky, scrollable, composed of panel widgets.
@@ -7,9 +8,21 @@ import { TagsPanel }     from "./TagsPanel";
 
 export function RightPanel() {
   return (
-    <aside className="sticky top-14 hidden h-[calc(100vh-56px)] w-[268px] shrink-0 flex-col gap-3 overflow-y-auto px-4 py-5 xl:flex">
+    <aside 
+      className="sticky top-14 hidden h-[calc(100vh-56px)] w-[268px] shrink-0 flex-col gap-3 overflow-y-auto px-4 py-5 xl:flex"
+      style={{
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none',
+      }}
+    >
+      <GroupsPanel />
       <TrendingPanel />
       <TagsPanel />
+      <style>{`
+        aside::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </aside>
   );
 }

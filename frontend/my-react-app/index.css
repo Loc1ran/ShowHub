@@ -1,1 +1,22 @@
 @import "tailwindcss";
+
+/* Prevent white background flash and optimize initial paint */
+html {
+  background: #0a0a0a;
+  margin: 0;
+  padding: 0;
+  overscroll-behavior: none;
+}
+
+body {
+  background: #0a0a0a;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+}
+
+#root {
+  background: #0a0a0a;
+  overscroll-behavior: none;
+}

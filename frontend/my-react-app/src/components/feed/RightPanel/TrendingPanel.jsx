@@ -6,7 +6,7 @@ import { TRENDING } from "../../../data/feedData";
 
 export function TrendingPanel() {
   return (
-    <div className="rounded-xl border border-white/6 bg-neutral-900 p-4">
+    <div className="rounded-2xl border border-white/6 bg-neutral-900 p-4">
       <div className="mb-3 flex items-center gap-2">
         <Icon name="fire" size={13} className="text-neutral-500" />
         <h3 className="text-[13px] font-semibold text-neutral-400">Trending Shows</h3>

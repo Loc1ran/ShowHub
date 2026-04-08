@@ -21,9 +21,10 @@ export function FeedHeader({ onToggleSidebar, onLogin, onSignup, onHome }) {
         </button>
         <button
           onClick={onHome}
-          className="text-[15px] font-bold tracking-tight text-white hover:opacity-80 transition-opacity"
+          className="flex flex-col items-start hover:opacity-80 transition-opacity"
         >
-          ShowHub
+          <span className="text-[15px] font-bold tracking-tight text-white">ShowHub</span>
+          <div className="w-12 h-0.5 bg-white rounded-full mt-0.5"></div>
         </button>
       </div>
 
